@@ -29,13 +29,6 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.pink,
           ),
         ),
-        // textButtonTheme: TextButtonThemeData(
-        //   style: TextButton.styleFrom(
-        //     textStyle: const TextStyle(
-        //       color: Colors.pink,
-        //     ),
-        //   ),
-        // ),
       ),
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(

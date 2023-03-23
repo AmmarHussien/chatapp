@@ -1,3 +1,5 @@
+import 'package:chatapp/widget/chat/messages.dart';
+import 'package:chatapp/widget/chat/new_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,34 +47,24 @@ class ChatScreen extends StatelessWidget {
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('chats/ZSxxYOitQeLHJY2sX06D/messages')
-            .snapshots(),
-        builder: (context, streamSnapshot) {
-          if (streamSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final documents = streamSnapshot.data!.docs;
-          return ListView.builder(
-            itemBuilder: (context, index) => Container(
-              padding: const EdgeInsets.all(10),
-              child: Text(documents[index]['text']),
+      body: SizedBox(
+        child: Column(
+          children: const [
+            Expanded(
+              child: Messages(),
             ),
-            itemCount: documents.length,
-          );
-        },
+            NewMessage(),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('chats/ZSxxYOitQeLHJY2sX06D/messages')
-              .add({'text': 'adding by clicking on add button'});
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: const Icon(Icons.add),
+      //   onPressed: () {
+      //     FirebaseFirestore.instance
+      //         .collection('chats/ZSxxYOitQeLHJY2sX06D/messages')
+      //         .add({'text': 'adding by clicking on add button'});
+      //   },
+      // ),
     );
   }
 }
