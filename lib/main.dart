@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'screens/splash_screen.dart';
 
 bool shouldUseFirestoreEmulator = false;
 
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            return const SplachScreen();
+          }
           if (userSnapshot.hasData) {
             return const ChatScreen();
           }

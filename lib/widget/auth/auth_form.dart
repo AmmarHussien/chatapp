@@ -89,6 +89,9 @@ class _AuthFormState extends State<AuthForm> {
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     decoration: const InputDecoration(
                       labelText: 'Email address',
                     ),
@@ -99,6 +102,9 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin)
                     TextFormField(
                       key: const ValueKey('username'),
+                      autocorrect: true,
+                      textCapitalization: TextCapitalization.words,
+                      enableSuggestions: true,
                       validator: (value) {
                         if (value!.isEmpty || value.length < 3) {
                           return 'Username Must be at least 3 characters long!';
