@@ -1,23 +1,23 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 enum ImageOptions {
   camera,
   galary,
 }
 
-class UserImagePicker extends StatefulWidget {
-  const UserImagePicker(this.imagePickFn, {super.key});
-
+class ChatImagePicker extends StatefulWidget {
+  const ChatImagePicker(this.imagePickFn, {super.key});
   final void Function(File pickedImage) imagePickFn;
-
   @override
-  State<UserImagePicker> createState() => _UserImagePickerState();
+  State<ChatImagePicker> createState() => _ChatImagePickerState();
 }
 
-class _UserImagePickerState extends State<UserImagePicker> {
+class _ChatImagePickerState extends State<ChatImagePicker> {
   File? _pickedImage;
   void _pickImageCamera() async {
     final pickedImageFile = await ImagePicker().pickImage(
@@ -29,6 +29,16 @@ class _UserImagePickerState extends State<UserImagePicker> {
       _pickedImage = File(pickedImageFile!.path);
     });
     widget.imagePickFn(File(pickedImageFile!.path));
+  }
+
+  Future uploadImage() async {
+    String fileName = Uuid().v1();
+    var ref = FirebaseStorage.instance
+        .ref()
+        .child('chat_images')
+        .child('$fileName.png');
+    var upload = await ref.putFile(_pickedImage!);
+    String imageUrl = await upload.ref.getDownloadURL();
   }
 
   void _pickImageGallery() async {
@@ -47,12 +57,12 @@ class _UserImagePickerState extends State<UserImagePicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: Colors.grey,
-          backgroundImage:
-              _pickedImage != null ? FileImage(_pickedImage!) : null,
-        ),
+        // CircleAvatar(
+        //   radius: 40,
+        //   backgroundColor: Colors.grey,
+        //   backgroundImage:
+        //       _pickedImage != null ? FileImage(_pickedImage!) : null,
+        // ),
         // TextButton.icon(
         //   onPressed: _pickImage,
         //   icon: Icon(
@@ -69,12 +79,10 @@ class _UserImagePickerState extends State<UserImagePicker> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Upload Image'),
             PopupMenuButton(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              padding: EdgeInsets.all(0),
               onSelected: (ImageOptions value) {
                 setState(() {
                   if (value == ImageOptions.camera) {

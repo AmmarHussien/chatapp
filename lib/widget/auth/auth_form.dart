@@ -30,7 +30,7 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
-  File? _userImageFile;
+  File _userImageFile = File(' ');
 
   void _pickedImage(File image) {
     _userImageFile = image;
@@ -59,7 +59,7 @@ class _AuthFormState extends State<AuthForm> {
         _userEmail.trim(),
         _userPassword.trim(),
         _userName.trim(),
-        _userImageFile!,
+        _userImageFile,
         _isLogin,
         context,
       );

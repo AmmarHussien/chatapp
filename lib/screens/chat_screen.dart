@@ -71,11 +71,13 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: SizedBox(
         child: Column(
-          children: const [
-            Expanded(
+          children:  [
+            const Expanded(
               child: Messages(),
             ),
-            NewMessage(),
+            NewMessage((pickedImage) {
+              
+            }),
           ],
         ),
       ),
